@@ -18,8 +18,6 @@ import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 @Configuration
-@ComponentScan
-@EnableAutoConfiguration
 public class EclipseLinkJpaConfiguration extends JpaBaseConfiguration {
 
 	protected EclipseLinkJpaConfiguration(DataSource dataSource, JpaProperties properties,
@@ -35,12 +33,11 @@ public class EclipseLinkJpaConfiguration extends JpaBaseConfiguration {
 	@Override
 	protected Map<String, Object> getVendorProperties() {
 		Map<String, Object> map = new HashMap<>();
-		
-		  map.put(PersistenceUnitProperties.WEAVING, "false");
-		  map.put(PersistenceUnitProperties.LOGGING_LEVEL, SessionLog.FINER_LABEL);
-		  map.put(PersistenceUnitProperties.DDL_GENERATION, "drop-and-create-tables");
-		 
+
+		map.put(PersistenceUnitProperties.WEAVING, "false");
+		map.put(PersistenceUnitProperties.LOGGING_LEVEL, SessionLog.FINER_LABEL);
+		//map.put(PersistenceUnitProperties.DDL_GENERATION, "drop-and-create-tables");
+
 		return map;
 	}
-
 }

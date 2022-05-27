@@ -10,7 +10,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.eclipse.persistence.sessions.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,38 +23,24 @@ public class KnumbersService {
 	private CriteriaQuery<Knumbers> cq;
 	
 	public Knumbers selectNumber(Integer id) {
+		//cb = em.getCriteriaBuilder();
 		cb = em.getCriteriaBuilder();
+
 		cq = cb.createQuery(Knumbers.class);
 		Root<Knumbers> root = cq.from(Knumbers.class);
 		cq.select(root).where(cb.equal(root.get("id"), id));
-		//return em.createQuery(cq).getFirstResult();
 		return em.createQuery(cq).getSingleResult();
 	}
 	
 	@Transactional
-	public Knumbers insertNumber(Knumbers kn, Integer n) {
-		//Session session = em.unwrap(Session.class);
-		Connection conn = em.unwrap(Connection.class);
-		//eclipselink
-		try {
-			conn.setAutoCommit(false);
-			conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		//hibernate
-		//session.doWork(conn -> conn.setAutoCommit(false));
-		//session.doWork(conn -> conn.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED));
+	public Knumbers insertNumber(Knumbers kn, Integer n) {	
 		kn.setTestNumber(n);
+		kn.setNumber(n);
 		em.persist(kn);
-		//session.doWork(conn -> System.out.println(conn.getAutoCommit()));
-		//session.doWork(conn -> System.out.println(conn.getTransactionIsolation()));
-		System.out.println("ID3:" + kn.getId());
+
 		try {
 			TimeUnit.SECONDS.sleep(20);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return kn;
